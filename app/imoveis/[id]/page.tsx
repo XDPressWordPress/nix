@@ -6,21 +6,22 @@ import { MapPin, Bed, Bath, Square, ArrowLeft, Phone, Mail } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 
-interface PropertyPageProps {
-  params: {
-    id: string
-  }
-}
 
 // Função para buscar imóvel por ID
 async function getProperty(id: string) {
-  return await prisma.property.findUnique({
-    where: { id }
-  })
+  try {
+    return await prisma.property.findUnique({
+      where: { id }
+    })
+  } catch (error) {
+    console.error('Erro ao buscar imóvel:', error)
+    return null
+  }
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
-  const property = await getProperty(params.id)
+export default async function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const property = await getProperty(id)
 
   if (!property) {
     notFound()
@@ -52,19 +53,19 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           <div className="space-y-4">
             <div className="relative h-96 rounded-lg overflow-hidden">
               <Image
-                src={property.images[0] || 'https://via.placeholder.com/600x400'}
+                src={Array.isArray(property.images) && property.images.length > 0 ? (property.images[0] as string) : 'https://via.placeholder.com/600x400'}
                 alt={property.title}
                 fill
                 className="object-cover"
               />
             </div>
             
-            {property.images.length > 1 && (
+            {Array.isArray(property.images) && property.images.length > 1 && (
               <div className="grid grid-cols-3 gap-4">
                 {property.images.slice(1, 4).map((image, index) => (
                   <div key={index} className="relative h-24 rounded-lg overflow-hidden">
                     <Image
-                      src={image}
+                      src={image as string}
                       alt={`${property.title} - Imagem ${index + 2}`}
                       fill
                       className="object-cover hover:scale-105 transition-transform cursor-pointer"

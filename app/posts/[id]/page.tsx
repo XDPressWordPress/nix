@@ -7,20 +7,26 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 
 interface PostPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 // Função para buscar post por ID
 async function getPost(id: string) {
-  return await prisma.post.findUnique({
-    where: { id, published: true }
-  })
+  try {
+    return await prisma.post.findUnique({
+      where: { id, published: true }
+    })
+  } catch (error) {
+    console.error('Erro ao buscar post:', error)
+    return null
+  }
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const post = await getPost(params.id)
+  const { id } = await params
+  const post = await getPost(id)
 
   if (!post) {
     notFound()

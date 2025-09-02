@@ -1,4 +1,4 @@
-// File: /home/xdprojetos/Downloads/project/app/admin/page.tsx
+// File: /home/xdprojetos/github/nix/app/admin/page.tsx
 import * as entry from '../../../../app/admin/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

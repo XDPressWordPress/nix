@@ -15,7 +15,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     }).format(price)
   }
 
-  const primaryImage = property.images[0] || 'https://via.placeholder.com/400x300'
+  const primaryImage = Array.isArray(property.images) && property.images.length > 0 ? (property.images[0] as string) : 'https://via.placeholder.com/400x300'
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group">

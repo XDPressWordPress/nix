@@ -4,7 +4,7 @@ export interface Property {
   description: string
   price: number
   address: string
-  images: string[]
+  images: any // Compatível com JsonValue do Prisma
   bedrooms?: number | null
   bathrooms?: number | null
   area?: number | null

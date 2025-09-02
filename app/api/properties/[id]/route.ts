@@ -4,20 +4,19 @@ import { prisma } from '@/lib/prisma'
 // GET - Buscar propriedade por ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const property = await prisma.property.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
-
     if (!property) {
       return NextResponse.json(
         { error: 'Propriedade não encontrada' },
         { status: 404 }
       )
     }
-
     return NextResponse.json(property)
   } catch (error) {
     console.error('Erro ao buscar propriedade:', error)
@@ -31,13 +30,13 @@ export async function GET(
 // PUT - Atualizar propriedade
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const data = await request.json()
-    
+    const { id } = await params
     const property = await prisma.property.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         title: data.title,
         description: data.description,
@@ -51,7 +50,6 @@ export async function PUT(
         status: data.status
       }
     })
-
     return NextResponse.json(property)
   } catch (error) {
     console.error('Erro ao atualizar propriedade:', error)
@@ -65,13 +63,13 @@ export async function PUT(
 // DELETE - Excluir propriedade
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await prisma.property.delete({
-      where: { id: params.id }
+      where: { id }
     })
-
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Erro ao excluir propriedade:', error)

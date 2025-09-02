@@ -1,14 +1,26 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import PropertyCard from '@/components/PropertyCard'
-import { Search, Filter } from 'lucide-react'
+import { Search, Filter, Building2 } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic'
 
 // Função para buscar todos os imóveis
 async function getProperties() {
-  return await prisma.property.findMany({
-    orderBy: { createdAt: 'desc' }
-  })
+  // Durante o build, retorna array vazio
+  if (process.env.BUILD_MODE === 'true') {
+    return []
+  }
+  
+  try {
+    return await prisma.property.findMany({
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error('Erro ao buscar imóveis:', error)
+    return []
+  }
 }
 
 export default async function ImoveisPage() {

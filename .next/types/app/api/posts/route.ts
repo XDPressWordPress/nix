@@ -1,4 +1,4 @@
-// File: /home/xdprojetos/Downloads/project/app/api/posts/route.ts
+// File: /home/xdprojetos/github/nix/app/api/posts/route.ts
 import * as entry from '../../../../../app/api/posts/route.js'
 import type { NextRequest } from 'next/server.js'
 

@@ -1,4 +1,4 @@
-// File: /home/xdprojetos/Downloads/project/app/imoveis/page.tsx
+// File: /home/xdprojetos/github/nix/app/imoveis/page.tsx
 import * as entry from '../../../../app/imoveis/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
